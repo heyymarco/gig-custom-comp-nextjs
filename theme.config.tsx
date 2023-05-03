@@ -1,6 +1,6 @@
 import { styleSheet, cssVars, style, rule, atGlobal, vars, descendants, switchOf } from '@cssfn/core'
 import { basics, iconConfig } from '@reusable-ui/components'
-import { codes, colors, usesMildable, usesOutlineable } from '@reusable-ui/core'
+import { codes, colors, leads, typos, usesMildable, usesOutlineable } from '@reusable-ui/core'
 import { codeValues, colorValues, defineTheme } from '@reusable-ui/core'
 
 
@@ -9,6 +9,9 @@ defineTheme('primaryAlt', 'hsl(216, 100%, 85%)');
 (colorValues as any).primaryAltMild = 'hsl(216, 100%, 87%)' as any;
 
 codeValues.fontSize = '1em';
+
+
+leads.fontWeight = typos.fontWeightNormal;
 
 
 
