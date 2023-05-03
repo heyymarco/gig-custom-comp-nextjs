@@ -61,4 +61,6 @@ styleSheet(() => style({
 
 
 
-iconConfig.image.files.push('reusable-ui.svg');
+iconConfig.image.files.push(
+    { name: 'fiverr.svg', ratio: '1/1'}
+);

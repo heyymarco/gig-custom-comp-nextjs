@@ -7,7 +7,7 @@ import { ParagraphLorem } from '@/components/ParagraphLorem'
 import { SampleDialog } from '@/components/SampleDialog'
 import { SampleDropdown } from '@/components/SampleDropdown'
 import { SampleNavigation } from '@/components/SampleNavigation'
-import { Tab, TabPanel, Accordion, AccordionItem, Icon, Group, Label, ExclusiveAccordion, Content } from '@reusable-ui/components'
+import { Tab, TabPanel, Accordion, AccordionItem, Icon, Group, Label, ExclusiveAccordion, Content, ButtonIcon } from '@reusable-ui/components'
 
 
 
@@ -98,7 +98,10 @@ export default function Home() {
                                     I&apos;m a front-end web developer. My main job is developing web component in React. I created & maintain over 100+ custom components, hooks, & libs on Github/NPM.
                                 </p>
                                 <p>
-                                    I&apos;m on <strong>Fiverr</strong>, waiting for your order to fulfill my <em>passionable job</em>.
+                                    I&apos;m on <strong>Fiverr</strong>, waiting for your order to fulfill my <em>passionable job</em>.<br />
+                                    <ButtonIcon icon='fiverr' theme='success' buttonStyle='link' href='https://www.fiverr.com/heymarco/develop-a-reusable-custom-react-component-ui-widget'>
+                                        https://www.fiverr.com/heymarco
+                                    </ButtonIcon>
                                 </p>
                             </div>
                         </div>
