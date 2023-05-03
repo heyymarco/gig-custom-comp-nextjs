@@ -29,6 +29,7 @@
   flex-wrap: nowrap;
   gap: 2rem;
   align-items: center;
+  font-size: 18px;
 }
 .profileImg {
   border-radius: 50%;
