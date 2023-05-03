@@ -37,7 +37,7 @@ export default function Home() {
                         <Accordion theme='primary'>
                             <AccordionItem bodyComponent={<Content className={styles.featurePanel} />} label={<h3><Icon icon='account_tree' /> Composition</h3>} defaultExpanded={true}>
                                 <p>
-                                    Made up from <code>JSX</code> &amp; <code>props</code> with <em>no</em> / <em>minimal</em> vanilla JS.
+                                    Made up from <code>JSX</code>, <code>props</code> and <code>state</code> with <em>no</em> / <em>minimal</em> vanilla JS.
                                 </p>
                                 <p>
                                     No <code>JQuery</code>. Everything is written in <em>react way</em>.
