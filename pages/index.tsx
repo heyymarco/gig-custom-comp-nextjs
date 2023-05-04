@@ -1,9 +1,7 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '@/styles/Home.module.css'
 import { FeatureItem } from '@/components/FeatureItem'
 import IconGallery from '@/components/IconGallery'
-import { ParagraphLorem } from '@/components/ParagraphLorem'
 import { SampleDialog } from '@/components/SampleDialog'
 import { SampleDropdown } from '@/components/SampleDropdown'
 import { SampleNavigation } from '@/components/SampleNavigation'
@@ -29,9 +27,47 @@ export default function Home() {
                     bodyComponent={<Content size='lg' />}
                 >
                     <TabPanel label={<h4>React</h4>}>
-                        <p>The detail of second item.</p>
-                        <ParagraphLorem />
-                        <ParagraphLorem />
+                        <h2>
+                            Universal React Component
+                        </h2>
+                        <div className={styles.featureList}>
+                            <FeatureItem>
+                                <h3>
+                                    Works on <code>create-react-app</code>
+                                </h3>
+                            </FeatureItem>
+                            <FeatureItem>
+                                <h3>
+                                    Works on <code>create-next-app</code>
+                                </h3>
+                            </FeatureItem>
+                        </div>
+                        <hr />
+                        <h2>
+                            Cross Browser Support
+                        </h2>
+                        <div className={styles.featureList}>
+                            <FeatureItem>
+                                <h3>
+                                    Works on <strong>Chrome</strong>
+                                </h3>
+                            </FeatureItem>
+                            <FeatureItem>
+                                <h3>
+                                    Works on <strong>Firefox</strong>
+                                </h3>
+                            </FeatureItem>
+                            <FeatureItem>
+                                <h3>
+                                    Works on <strong>Safari</strong>
+                                </h3>
+                            </FeatureItem>
+                            <FeatureItem>
+                                <h3>
+                                    Works on <strong>Edge</strong>
+                                </h3>
+                            </FeatureItem>
+                        </div>
                     </TabPanel>
                     <TabPanel label={<h4>Custom Components</h4>}>
                         <Accordion theme='primary'>
