@@ -4,7 +4,7 @@ import {
     children,
     style,
     vars,
-    scopeOf,
+    scope,
     descendants,
     rule,
 }                           from '@cssfn/core'          // writes css in javascript
@@ -119,10 +119,10 @@ const dummyArticleLayout = () => style({
 });
 
 export default () => [
-    scopeOf('dummyPage', {
+    scope('dummyPage', {
         ...dummyPageLayout(),
     }),
-    scopeOf('dummyArticle', {
+    scope('dummyArticle', {
         ...dummyArticleLayout(),
     }),
 ];

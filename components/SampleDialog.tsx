@@ -115,7 +115,7 @@ export const SampleDialog = () => {
                     </EditButton>
                 </p>
             </div>
-            <ModalStatus theme='primary' modalViewport={listItemRef} backdropStyle='static' onExpandedChange={({expanded}) => {
+            <ModalStatus theme='primary' viewport={listItemRef} backdropStyle='static' onExpandedChange={({expanded}) => {
                 if (!expanded) {
                     setEditMode(null);
                     setProduct({...product});

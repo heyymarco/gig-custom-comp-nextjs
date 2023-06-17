@@ -1,4 +1,4 @@
-import { style, imports, rule, children } from '@cssfn/core'
+import { style, rule, children } from '@cssfn/core'
 
 import { spacers, usesBackground, usesForeground } from '@reusable-ui/core';
 import { bodyElm, icons } from '@reusable-ui/components'
@@ -61,9 +61,7 @@ const usesIconGalleryLayout = () => {
                 }),
                 ...rule(':hover', {
                     ...children(labelElm, {
-                        ...imports([
-                            backgroundRule, // cover the neighbour with solid background
-                        ]),
+                        ...backgroundRule(), // cover the neighbour with solid background
                         ...style({
                             backg    : backgroundVars.backg, // cover the neighbour with solid background
                         }),
@@ -92,9 +90,7 @@ const usesIconGalleryLayout = () => {
                 }),
                 ...rule(':hover', {
                     ...children('.label', {
-                        ...imports([
-                            backgroundRule, // cover the neighbour with solid background
-                        ]),
+                        ...backgroundRule(), // cover the neighbour with solid background
                         ...style({
                             backg    : backgroundVars.backg, // cover the neighbour with solid background
                         }),
