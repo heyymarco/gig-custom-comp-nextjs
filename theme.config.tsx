@@ -1,3 +1,4 @@
+import '@reusable-ui/typos/dist/effects'
 import { styleSheet, cssVars, style, rule, atGlobal, vars, descendants, switchOf } from '@cssfn/core'
 import { basics, iconConfig } from '@reusable-ui/components'
 import { codes, colors, leads, typos, usesMildable, usesOutlineable } from '@reusable-ui/core'

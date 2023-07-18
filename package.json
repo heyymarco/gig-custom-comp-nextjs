@@ -9,20 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@cssfn/core": "^3.0.0",
-    "@cssfn/cssfn-dom": "^3.0.0",
-    "@cssfn/cssfn-react": "^3.0.0",
-    "@heymarco/quantity-input": "^3.0.2",
-    "@reusable-ui/components": "^6.0.2",
-    "@reusable-ui/core": "^6.0.2",
-    "@types/node": "18.16.3",
-    "@types/react": "18.2.0",
-    "@types/react-dom": "18.2.1",
-    "eslint": "8.39.0",
-    "eslint-config-next": "13.3.4",
-    "next": "13.3.4",
+    "@cssfn/core": "^3.0.2",
+    "@cssfn/cssfn-dom": "^3.0.2",
+    "@cssfn/cssfn-react": "^3.0.2",
+    "@heymarco/quantity-input": "^3.0.8",
+    "@reusable-ui/components": "^6.0.6",
+    "@reusable-ui/core": "^6.0.6",
+    "@types/node": "20.4.2",
+    "@types/react": "18.2.15",
+    "@types/react-dom": "18.2.7",
+    "eslint": "8.45.0",
+    "eslint-config-next": "13.4.10",
+    "next": "13.4.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.0.4"
+    "typescript": "5.1.6"
   }
 }
