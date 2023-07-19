@@ -5,7 +5,7 @@ import IconGallery from '@/components/IconGallery'
 import { SampleDialog } from '@/components/SampleDialog'
 import { SampleDropdown } from '@/components/SampleDropdown'
 import { SampleNavigation } from '@/components/SampleNavigation'
-import { Tab, TabPanel, Accordion, AccordionItem, Icon, Group, Label, ExclusiveAccordion, Content, ButtonIcon } from '@reusable-ui/components'
+import { Tab, TabPanel, Accordion, AccordionItem, Icon, Group, Label, ExclusiveAccordion, Content, ButtonIcon, ListItem } from '@reusable-ui/components'
 
 
 
@@ -71,7 +71,7 @@ export default function Home() {
                     </TabPanel>
                     <TabPanel label={<h4>Custom Components</h4>}>
                         <Accordion theme='primary'>
-                            <AccordionItem bodyComponent={<Content className={styles.featurePanel} />} label={<h3><Icon icon='account_tree' /> Composition</h3>} defaultExpanded={true}>
+                            <AccordionItem bodyComponent={<ListItem className={styles.featurePanel} />} label={<h3><Icon icon='account_tree' /> Composition</h3>} defaultExpanded={true}>
                                 <p>
                                     Made up from <code>JSX</code>, <code>props</code> and <code>state</code> with <em>no</em> / <em>minimal</em> vanilla JS.
                                 </p>
@@ -79,12 +79,12 @@ export default function Home() {
                                     No <code>JQuery</code>. Everything is written in <em>react way</em>.
                                 </p>
                             </AccordionItem>
-                            <AccordionItem bodyComponent={<Content className={styles.featurePanel} />} label={<h3><Icon icon='format_list_bulleted' /> Intellisense Friendly</h3>} defaultExpanded={true}>
+                            <AccordionItem bodyComponent={<ListItem className={styles.featurePanel} />} label={<h3><Icon icon='format_list_bulleted' /> Intellisense Friendly</h3>} defaultExpanded={true}>
                                 <p>
                                     Written in <strong>TypeScript</strong>. Useful for <em>VS Code</em> suggestion dropdown &amp; autocomplete.
                                 </p>
                             </AccordionItem>
-                            <AccordionItem bodyComponent={<Content className={styles.featurePanel} />} label={<h3><Icon icon='color_lens' /> Theme-able</h3>} defaultExpanded={true}>
+                            <AccordionItem bodyComponent={<ListItem className={styles.featurePanel} />} label={<h3><Icon icon='color_lens' /> Theme-able</h3>} defaultExpanded={true}>
                                 <p style={{display: 'inline'}}>
                                     Contextual theme:
                                 </p>
@@ -97,7 +97,7 @@ export default function Home() {
                                     <Label theme='info' mild={false}>Custom 2</Label>
                                 </Group>
                             </AccordionItem>
-                            <AccordionItem bodyComponent={<Content className={styles.featurePanel} />} label={<h3><Icon icon='tune' /> Customizable</h3>} defaultExpanded={true}>
+                            <AccordionItem bodyComponent={<ListItem className={styles.featurePanel} />} label={<h3><Icon icon='tune' /> Customizable</h3>} defaultExpanded={true}>
                                 <p>
                                     Using css variables <code>--cust-something: 2em;</code> to customize the component.
                                 </p>
@@ -109,16 +109,16 @@ export default function Home() {
                     </TabPanel>
                     <TabPanel label={<h4>Samples</h4>}>
                         <ExclusiveAccordion theme='primary'>
-                            <AccordionItem bodyComponent={<Content className={styles.demoPanel} />} label={<code>{'<Dropdown>'}</code>}>
+                            <AccordionItem bodyComponent={<ListItem className={styles.demoPanel} />} label={<code>{'<Dropdown>'}</code>}>
                                 <SampleDropdown />
                             </AccordionItem>
-                            <AccordionItem bodyComponent={<Content className={styles.demoPanel} />} label={<code>{'<CustomDialog>'}</code>}>
+                            <AccordionItem bodyComponent={<ListItem className={styles.demoPanel} />} label={<code>{'<CustomDialog>'}</code>}>
                                 <SampleDialog />
                             </AccordionItem>
-                            <AccordionItem bodyComponent={<Content className={styles.demoPanel} />} label={<code>{'<Navigation>'}</code>}>
+                            <AccordionItem bodyComponent={<ListItem className={styles.demoPanel} />} label={<code>{'<Navigation>'}</code>}>
                                 <SampleNavigation />
                             </AccordionItem>
-                            <AccordionItem bodyComponent={<Content className={styles.demoPanel} />} label={<code>{'<Pagination>'}</code>}>
+                            <AccordionItem bodyComponent={<ListItem className={styles.demoPanel} />} label={<code>{'<Pagination>'}</code>}>
                                 <IconGallery />
                             </AccordionItem>
                         </ExclusiveAccordion>
