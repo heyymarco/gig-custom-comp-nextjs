@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@cssfn/core": "^3.0.2",
-    "@cssfn/cssfn-dom": "^3.0.2",
-    "@cssfn/cssfn-react": "^3.0.2",
+    "@cssfn/core": "^3.1.0",
+    "@cssfn/cssfn-dom": "^3.1.0",
+    "@cssfn/cssfn-react": "^3.1.0",
     "@heymarco/quantity-input": "^3.0.8",
     "@reusable-ui/components": "^6.0.6",
     "@reusable-ui/core": "^6.0.6",
