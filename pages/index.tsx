@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import styles from '@/styles/Home.module.css'
 import { FeatureItem } from '@/components/FeatureItem'
 import IconGallery from '@/components/IconGallery'
 import { SampleDialog } from '@/components/SampleDialog'
@@ -7,9 +6,28 @@ import { SampleDropdown } from '@/components/SampleDropdown'
 import { SampleNavigation } from '@/components/SampleNavigation'
 import { Tab, TabPanel, Accordion, AccordionItem, Icon, Group, Label, ExclusiveAccordion, Content, ButtonIcon, ListItem } from '@reusable-ui/components'
 
+// cssfn:
+import {
+    // style sheets:
+    dynamicStyleSheets,
+}                           from '@cssfn/cssfn-react'
+import '../styles/HomeStyle'
+
+
+
+// styles:
+const useHomeStyleSheet = dynamicStyleSheets(
+    () => import(/* webpackPrefetch: true */'../styles/HomeStyle')
+, { id: 'uzr425g47q' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
 
 
 export default function Home() {
+    // styles:
+    const styleSheets = useHomeStyleSheet();
+    
+    
+    
     return (
         <>
             <Head>
@@ -18,7 +36,7 @@ export default function Home() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Content className={styles.page} theme='primary' gradient>
+            <Content className={styleSheets.page} theme='primary' gradient>
                 <Tab
                     theme='primaryAlt'
                     size='lg'
@@ -30,7 +48,7 @@ export default function Home() {
                         <h2>
                             Universal React Component
                         </h2>
-                        <div className={styles.featureList}>
+                        <div className={styleSheets.featureList}>
                             <FeatureItem>
                                 <h3>
                                     Works on <code>create-react-app</code>
@@ -46,7 +64,7 @@ export default function Home() {
                         <h2>
                             Cross Browser Support
                         </h2>
-                        <div className={styles.featureList}>
+                        <div className={styleSheets.featureList}>
                             <FeatureItem>
                                 <h3>
                                     Works on <strong>Chrome</strong>
@@ -71,7 +89,7 @@ export default function Home() {
                     </TabPanel>
                     <TabPanel label={<h4>Custom Components</h4>}>
                         <Accordion theme='primary'>
-                            <AccordionItem bodyComponent={<ListItem className={styles.featurePanel} />} label={<h3><Icon icon='account_tree' /> Composition</h3>} defaultExpanded={true}>
+                            <AccordionItem bodyComponent={<ListItem className={styleSheets.featurePanel} />} label={<h3><Icon icon='account_tree' /> Composition</h3>} defaultExpanded={true}>
                                 <p>
                                     Made up from <code>JSX</code>, <code>props</code> and <code>state</code> with <em>no</em> / <em>minimal</em> vanilla JS.
                                 </p>
@@ -79,12 +97,12 @@ export default function Home() {
                                     No <code>JQuery</code>. Everything is written in <em>react way</em>.
                                 </p>
                             </AccordionItem>
-                            <AccordionItem bodyComponent={<ListItem className={styles.featurePanel} />} label={<h3><Icon icon='format_list_bulleted' /> Intellisense Friendly</h3>} defaultExpanded={true}>
+                            <AccordionItem bodyComponent={<ListItem className={styleSheets.featurePanel} />} label={<h3><Icon icon='format_list_bulleted' /> Intellisense Friendly</h3>} defaultExpanded={true}>
                                 <p>
                                     Written in <strong>TypeScript</strong>. Useful for <em>VS Code</em> suggestion dropdown &amp; autocomplete.
                                 </p>
                             </AccordionItem>
-                            <AccordionItem bodyComponent={<ListItem className={styles.featurePanel} />} label={<h3><Icon icon='color_lens' /> Theme-able</h3>} defaultExpanded={true}>
+                            <AccordionItem bodyComponent={<ListItem className={styleSheets.featurePanel} />} label={<h3><Icon icon='color_lens' /> Theme-able</h3>} defaultExpanded={true}>
                                 <p style={{display: 'inline'}}>
                                     Contextual theme:
                                 </p>
@@ -97,7 +115,7 @@ export default function Home() {
                                     <Label theme='info' mild={false}>Custom 2</Label>
                                 </Group>
                             </AccordionItem>
-                            <AccordionItem bodyComponent={<ListItem className={styles.featurePanel} />} label={<h3><Icon icon='tune' /> Customizable</h3>} defaultExpanded={true}>
+                            <AccordionItem bodyComponent={<ListItem className={styleSheets.featurePanel} />} label={<h3><Icon icon='tune' /> Customizable</h3>} defaultExpanded={true}>
                                 <p>
                                     Using css variables <code>--cust-something: 2em;</code> to customize the component.
                                 </p>
@@ -109,24 +127,24 @@ export default function Home() {
                     </TabPanel>
                     <TabPanel label={<h4>Samples</h4>}>
                         <ExclusiveAccordion theme='primary'>
-                            <AccordionItem bodyComponent={<ListItem className={styles.demoPanel} />} label={<code>{'<Dropdown>'}</code>}>
+                            <AccordionItem bodyComponent={<ListItem className={styleSheets.demoPanel} />} label={<code>{'<Dropdown>'}</code>}>
                                 <SampleDropdown />
                             </AccordionItem>
-                            <AccordionItem bodyComponent={<ListItem className={styles.demoPanel} />} label={<code>{'<CustomDialog>'}</code>}>
+                            <AccordionItem bodyComponent={<ListItem className={styleSheets.demoPanel} />} label={<code>{'<CustomDialog>'}</code>}>
                                 <SampleDialog />
                             </AccordionItem>
-                            <AccordionItem bodyComponent={<ListItem className={styles.demoPanel} />} label={<code>{'<Navigation>'}</code>}>
+                            <AccordionItem bodyComponent={<ListItem className={styleSheets.demoPanel} />} label={<code>{'<Navigation>'}</code>}>
                                 <SampleNavigation />
                             </AccordionItem>
-                            <AccordionItem bodyComponent={<ListItem className={styles.demoPanel} />} label={<code>{'<Pagination>'}</code>}>
+                            <AccordionItem bodyComponent={<ListItem className={styleSheets.demoPanel} />} label={<code>{'<Pagination>'}</code>}>
                                 <IconGallery />
                             </AccordionItem>
                         </ExclusiveAccordion>
                     </TabPanel>
                     <TabPanel label={<h4>I&apos;m on Fiverr</h4>}>
-                        <div className={styles.profile}>
-                            <img alt='' src='/marco.jpg' className={styles.profileImg} />
-                            <div className={styles.profileTxt}>
+                        <div className={styleSheets.profile}>
+                            <img alt='' src='/marco.jpg' className={styleSheets.profileImg} />
+                            <div>
                                 <p>
                                     Hi I&apos;m Marco. 
                                 </p>
@@ -145,7 +163,7 @@ export default function Home() {
                         <h4>
                             With my service, you&apos;ll get:
                         </h4>
-                        <div className={styles.featureList}>
+                        <div className={styleSheets.featureList}>
                             <FeatureItem>
                                 <h4>
                                     High Quality React Component
