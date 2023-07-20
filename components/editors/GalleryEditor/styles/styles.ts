@@ -37,6 +37,7 @@ import {
     
     // a capability of UI to be disabled:
     usesDisableable,
+    typos,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -236,6 +237,9 @@ export const usesGalleryEditorLayout = () => {
             }),
             ...children(uploadImageElm, {
                 // children:
+                ...children('h6', {
+                    fontSize : `calc((${typos.fontSizeSm} + ${typos.fontSizeMd}) / 2)`,
+                }),
                 ...children(uploadImageInputFileElm, {
                     // layouts:
                     display: 'none',

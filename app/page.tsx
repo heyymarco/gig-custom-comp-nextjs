@@ -15,6 +15,7 @@ import {
     dynamicStyleSheets,
 }                           from '@cssfn/cssfn-react'
 import './pageStyle'
+import { UploadImage } from '@/components/UploadImage'
 
 
 
@@ -139,6 +140,9 @@ export default function Home() {
                         </AccordionItem>
                         <AccordionItem bodyComponent={<ListItem className={styleSheets.demoPanel} />} label={<code>{'<Pagination>'}</code>}>
                             <IconGallery />
+                        </AccordionItem>
+                        <AccordionItem bodyComponent={<ListItem className={styleSheets.demoPanel} />} label={<code>{'<UploadImage>'}</code>}>
+                            <UploadImage />
                         </AccordionItem>
                     </ExclusiveAccordion>
                 </TabPanel>

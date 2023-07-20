@@ -23,6 +23,7 @@ import {
     
     // a spacer (gap) management system:
     spacers,
+    typos,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -133,9 +134,9 @@ export const [galleryEditors, galleryEditorValues, cssGalleryEditorConfig] = css
         
         
         // items:
-        itemMinColumnWidthSm : 'calc(3 * 40px)'                     as CssKnownProps['columnWidth'      ],
-        itemMinColumnWidthMd : 'calc(5 * 40px)'                     as CssKnownProps['columnWidth'      ],
-        itemMinColumnWidthLg : 'calc(8 * 40px)'                     as CssKnownProps['columnWidth'      ],
+        itemMinColumnWidthSm : 'calc(3 * 30px)'                     as CssKnownProps['columnWidth'      ],
+        itemMinColumnWidthMd : 'calc(5 * 30px)'                     as CssKnownProps['columnWidth'      ],
+        itemMinColumnWidthLg : 'calc(8 * 30px)'                     as CssKnownProps['columnWidth'      ],
         
         itemAspectRatio      : '1/1'                                as CssKnownProps['aspectRatio'      ],
         
@@ -143,6 +144,7 @@ export const [galleryEditors, galleryEditorValues, cssGalleryEditorConfig] = css
         
         // uploads:
         uploadBorderStyle    : 'dashed'                             as CssKnownProps['borderStyle'      ],
+        uploadFontSize       : typos.fontSizeSm                     as CssKnownProps['fontSize'         ],
         
         
         
