@@ -145,6 +145,7 @@ export const FullEditDialog = (props: FullEditDialogProps) => {
             product.shippingWeight = shippingWeight ?? undefined;
             product.stock          = stock ?? undefined;
             product.visibility     = visibility;
+            product.images         = images;
             
             onClose();
         }
@@ -279,7 +280,7 @@ export const FullEditDialog = (props: FullEditDialogProps) => {
                         <VisibilityEditor     className='visibility editor' value={visibility}     onChange={(value) => { setVisibility(value); setIsModified(true); }} theme='primaryAlt' />
                     </TabPanel>
                     <TabPanel label={PAGE_PRODUCTS_TAB_IMAGES}       panelComponent={<Generic className={styles.imagesTab} />}>
-                        {/* <GalleryEditor<HTMLElement, string>
+                        <GalleryEditor<HTMLElement, string>
                             // values:
                             value={images}
                             onChange={(value) => {
@@ -327,7 +328,7 @@ export const FullEditDialog = (props: FullEditDialogProps) => {
                             
                             // handlers:
                             onResolveUrl={resolveMediaUrl<never>}
-                        /> */}
+                        />
                     </TabPanel>
                     <TabPanel label={PAGE_PRODUCTS_TAB_DESCRIPTION}  panelComponent={<Generic className={styles.descriptionTab} />}>
                         <WysiwygEditor

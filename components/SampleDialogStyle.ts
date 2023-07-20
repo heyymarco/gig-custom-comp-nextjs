@@ -37,10 +37,10 @@ export const usesSampleDialogLayout = () => {
         ...children('.prodImg', {
             gridArea: 'image',
             alignSelf: 'center',
-            width: 'fit-content',
+            width: '170px',
             height: 'fit-content',
             display: 'grid',
-            ...children('img', {
+            ...children('.image', {
                 width: '170px',
             }),
             ...children('*', {

@@ -15,6 +15,8 @@ import CurrencyEditor from '@/components/editors/CurrencyEditor';
 import StockEditor from '@/components/editors/StockEditor';
 import TextEditor from '@/components/editors/TextEditor';
 import VisibilityEditor from '@/components/editors/VisibilityEditor';
+import { Image } from '@heymarco/image'
+import { resolveMediaUrl } from '@/libs/mediaStorage.client';
 
 
 
@@ -51,10 +53,10 @@ export const SampleDialog = () => {
         
         description: null,
         images: [
-            'nokia-3310_0.jpg',
-            'nokia-3310_1.jpg',
-            'nokia-3310_2.jpg',
-            'nokia-3310_3.jpg',
+            'nokia-3310/nokia-3310_0.jpg',
+            'nokia-3310/nokia-3310_1.jpg',
+            'nokia-3310/nokia-3310_2.jpg',
+            'nokia-3310/nokia-3310_3.jpg',
         ],
         path: 'nokia-3310'
     }));
@@ -85,10 +87,11 @@ export const SampleDialog = () => {
         <div>
             <div className={styles.main} ref={listItemRef}>
                 <div className='prodImg'>
-                    <img
+                    <Image
+                        className='image'
                         alt={name ?? ''}
-                        src={images?.[0] ? `/products/${path}/${images[0]}` : undefined}
-                        sizes='96px'
+                        src={resolveMediaUrl(images?.[0])}
+                        sizes='170w'
                     />
                     <EditButton onClick={() => setEditMode('full')} />
                 </div>

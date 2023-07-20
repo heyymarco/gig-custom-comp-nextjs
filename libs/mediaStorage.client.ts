@@ -9,5 +9,5 @@ export const resolveMediaUrl = <TNull extends undefined|never = never>(imageId: 
     //         cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_ENV,
     //     },
     // });
-    return 'imageId';
+    return `/products/${imageId}`;
 };
