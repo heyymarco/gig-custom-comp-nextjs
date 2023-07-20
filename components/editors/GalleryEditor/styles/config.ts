@@ -16,14 +16,18 @@ import {
 
 // reusable-ui core:
 import {
-    // a border (stroke) management system:
-    borders,
-    
-    
-    
     // a spacer (gap) management system:
     spacers,
+    
+    
+    
+    // a typography management system:
     typos,
+    
+    
+    
+    // ring (focus indicator) color of UI:
+    usesRing,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -40,6 +44,13 @@ import {
 
 // configs:
 export const [galleryEditors, galleryEditorValues, cssGalleryEditorConfig] = cssConfig(() => {
+    // dependencies:
+    
+    // features:
+    const {ringVars} = usesRing();
+    
+    
+    
     //#region keyframes
     const [keyframesDraggedRule, keyframesDragged] = keyframes({
         from  : {
@@ -101,12 +112,24 @@ export const [galleryEditors, galleryEditorValues, cssGalleryEditorConfig] = css
     
     const [uploadKeyframesDropTargetRule, uploadKeyframesDropTarget] = keyframes({
         from  : {
-            borderStyle : 'solid',
-            borderWidth : borders.hair,
+            boxShadow: [[
+                'inset',
+                '0px',
+                '0px',
+                '0px',
+                '0px',
+                ringVars.ring,
+            ]],
         },
         to    : {
-            borderStyle : 'solid',
-            borderWidth : borders.bold,
+            boxShadow: [[
+                'inset',
+                '0px',
+                '0px',
+                '0px',
+                '0.25rem',
+                ringVars.ring,
+            ]],
         },
     });
     //#endregion keyframes
