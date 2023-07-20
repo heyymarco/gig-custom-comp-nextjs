@@ -10,10 +10,10 @@ import { Image } from '@heymarco/image'
 export const UploadImage = () => {
     const name = 'Nokia 3310';
     const [images, setImages] = useState<string[]>([
-        'nokia-3310/nokia-3310_0.jpg',
-        'nokia-3310/nokia-3310_1.jpg',
-        'nokia-3310/nokia-3310_2.jpg',
-        'nokia-3310/nokia-3310_3.jpg',
+        '@ test/u3haisnhyszdzn7qm0ol',
+        '@ test/o6c5crkgoqmeth9kjgzq',
+        '@ test/sqtj1s6xyhebxo2pxie4',
+        '@ test/q8vpk6xbxeyhwkgwfwxr',
     ]);
     return (
         <GalleryEditor<HTMLElement, string>
@@ -37,7 +37,7 @@ export const UploadImage = () => {
             onUploadImageStart={async (imageFile, reportProgress, cancelController) => {
                 const formData = new FormData();
                 formData.append('image' , imageFile);
-                formData.append('folder', name);
+                formData.append('folder', '@ test');
                 const response = await axios.post('/api/upload', formData, {
                     headers          : { 'content-type': 'multipart/form-data' },
                     onUploadProgress : (event) => {

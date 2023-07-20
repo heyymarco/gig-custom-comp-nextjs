@@ -53,10 +53,10 @@ export const SampleDialog = () => {
         
         description: null,
         images: [
-            'nokia-3310/nokia-3310_0.jpg',
-            'nokia-3310/nokia-3310_1.jpg',
-            'nokia-3310/nokia-3310_2.jpg',
-            'nokia-3310/nokia-3310_3.jpg',
+            '@ test/u3haisnhyszdzn7qm0ol',
+            '@ test/o6c5crkgoqmeth9kjgzq',
+            '@ test/sqtj1s6xyhebxo2pxie4',
+            '@ test/q8vpk6xbxeyhwkgwfwxr',
         ],
         path: 'nokia-3310'
     }));

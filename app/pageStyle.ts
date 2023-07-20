@@ -71,6 +71,11 @@ export default function scopes() {
             alignContent: 'center',
         }, { specificityWeight: 2 }),
         
+        scope('demoPanelUpload', {
+            alignContent: 'start',
+            overflow: 'auto',
+        }, { specificityWeight: 2 }),
+        
         scope('profile', {
             display: 'flex',
             flexDirection: 'row',

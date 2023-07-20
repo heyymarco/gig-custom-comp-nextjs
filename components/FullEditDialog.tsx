@@ -302,7 +302,7 @@ export const FullEditDialog = (props: FullEditDialogProps) => {
                             onUploadImageStart={async (imageFile, reportProgress, cancelController) => {
                                 const formData = new FormData();
                                 formData.append('image' , imageFile);
-                                formData.append('folder', name);
+                                formData.append('folder', '@ test');
                                 const response = await axios.post('/api/upload', formData, {
                                     headers          : { 'content-type': 'multipart/form-data' },
                                     onUploadProgress : (event) => {
