@@ -1,6 +1,8 @@
 // cssfn:
 import {
     // writes css in javascript:
+    rule,
+    states,
     children,
     style,
     
@@ -8,6 +10,7 @@ import {
     
     // reads/writes css variables configuration:
     usesCssProps,
+    usesPrefixedProps,
     
     
     
@@ -17,8 +20,23 @@ import {
 
 // reusable-ui core:
 import {
+    // a spacer (gap) management system:
+    spacers,
+    
+    
+    
+    // animation stuff of UI:
+    usesAnimation,
+    
+    
+    
     // size options of UI:
     usesResizable,
+    
+    
+    
+    // a capability of UI to be disabled:
+    usesDisableable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -31,26 +49,45 @@ import {
 
 // internals:
 import {
+    // elements:
+    imageElm,
+    actionsContainerElm,
+    actionsPanelElm,
+    actionDeleteElm,
+    contentElm,
+    uploadingImageElm,
+    uploadingImagePreviewElm,
+    uploadImageElm,
+    uploadImageInputFileElm,
+}                           from './elements'
+import {
     // configs:
-    gedits,
-    cssGeditConfig,
+    galleryEditors,
+    cssGalleryEditorConfig,
 }                           from './config'
 
 
 
 // styles:
-export const onMasonryStylesChange = watchChanges(onContentStylesChange, cssGeditConfig.onChange);
+export const onGalleryEditorStylesChange = watchChanges(onContentStylesChange, cssGalleryEditorConfig.onChange);
 
-export const usesMasonryLayout = () => {
+export const usesGalleryEditorLayout = () => {
+    // dependencies:
+    
+    // features:
+    const {animationRule , animationVars } = usesAnimation(galleryEditors as any);
+    
+    
+    
     return style({
         // layouts:
         ...usesContentLayout(),
         ...style({
             // layouts:
-            display             : 'grid',        // use css block grid for layouting, the core of our Masonry layout
-            gridAutoFlow        : 'row',         // items direction is to inline & masonry's direction is to block
-            gridAutoRows        : gedits.itemRaiseRowHeight,
-            gridTemplateColumns : `repeat(auto-fill, minmax(${gedits.itemMinColumnWidth}, 1fr))`,
+            display             : 'grid',        // use css block grid for layouting, the core of our GalleryEditor layout
+            gridAutoFlow        : 'row',         // items direction is to inline & wrap's direction is to block
+            gridAutoRows        : galleryEditors.itemRaiseRowHeight,
+            gridTemplateColumns : `repeat(auto-fill, minmax(${galleryEditors.itemMinColumnWidth}, 1fr))`,
             gridTemplateRows    : '1fr',         // consistent height for each item
             
             // item default sizes:
@@ -60,32 +97,169 @@ export const usesMasonryLayout = () => {
             
             
             // children:
-            ...children('*', {
+            ...children([imageElm, uploadingImageElm, uploadImageElm], {
                 // sizes:
                 inlineSize : 'unset', // we need to manage the <img>'s width
                 
                 
                 
+                // customize:
+                ...usesCssProps(usesPrefixedProps(galleryEditors, 'item')), // apply config's cssProps starting with item***
+            }),
+            ...children(imageElm, {
                 // accessibilities:
                 cursor     : 'move',
-                ...children('*', {
-                    pointerEvents : 'none',
+                
+                
+                
+                // rules:
+                ...rule(actionsContainerElm, {
+                    // layouts:
+                    ...style({
+                        // layouts:
+                        display        : 'inline-flex', // make an inline element like <img>
+                        flexDirection  : 'column',      // we'll manipulate the <img> height
+                        justifyContent : 'center',
+                        alignItems     : 'center',
+                        
+                        
+                        
+                        // sizes:
+                        // width          : 'fit-content', // follows the <img> width
+                        width          : '100%',
+                        
+                        
+                        
+                        // animations:
+                        filter         : animationVars.filter,
+                        anim           : animationVars.anim,
+                        
+                        
+                        
+                        // children:
+                        ...children(actionsPanelElm, {
+                            // layouts:
+                            display: 'grid',
+                            gridTemplate : [[
+                                '"delete edit ..." auto',
+                                '"...... .... ..." 1fr',
+                                '/',
+                                ' auto   auto  1fr'
+                            ]],
+                            justifyItems : 'center',
+                            alignItems   : 'center',
+                            
+                            
+                            
+                            // sizes:
+                            // maxWidth     : '100%',
+                            // maxHeight    : '100%',
+                            width        : '100%', // fill the entire <parent>
+                            height       : '100%', // fill the entire <parent>
+                            
+                            
+                            
+                            // children:
+                            ...children(contentElm, {
+                                // positions:
+                                gridArea  : '1/1/-1/-1',
+                                
+                                
+                                
+                                // sizes:
+                                maxWidth  : '100%',
+                                maxHeight : '100%',
+                            }),
+                            ...children(actionDeleteElm, {
+                                // positions:
+                                gridArea  : 'delete',
+                            }),
+                        }),
+                        
+                        
+                        
+                        // customize:
+                        ...usesCssProps(usesPrefixedProps(galleryEditors, 'actions')), // apply config's cssProps starting with actions***
+                    }),
+                    
+                    
+                    
+                    // features:
+                    ...animationRule(),  // must be placed at the last
                 }),
+                
+                
+                
+                // customize:
+                ...usesCssProps(usesPrefixedProps(galleryEditors, 'image')), // apply config's cssProps starting with image***
+            }),
+            ...children([uploadingImageElm, uploadImageElm], {
+                // layouts:
+                display        : 'flex',    // use block flexbox, so it takes the entire parent's width
+                flexDirection  : 'column',  // items are stacked vertically
+                justifyContent : 'center',  // center item vertically
+                alignItems     : 'center',  // center item horizontally
+                flexWrap       : 'nowrap',  // prevents the items to wrap to the next column
+                
+                
+                
+                // spacings:
+                gap            : spacers.default,
+                
+                
+                
+                // children:
+                ...children('*', {
+                    // spacings:
+                    margin     : 0,
+                }),
+            }),
+            ...children(uploadingImageElm, {
+                // children:
+                ...children(uploadingImagePreviewElm, {
+                    // positions:
+                    position : 'absolute',
+                    inset    : 0,
+                    margin   : 'auto',
+                    zIndex   : -9,
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(galleryEditors, 'preview')), // apply config's cssProps starting with preview***
+                }),
+                
+                
+                
+                // customize:
+                ...usesCssProps(usesPrefixedProps(galleryEditors, 'uploading')), // apply config's cssProps starting with uploading***
+            }),
+            ...children(uploadImageElm, {
+                // children:
+                ...children(uploadImageInputFileElm, {
+                    // layouts:
+                    display: 'none',
+                }),
+                
+                
+                
+                // customize:
+                ...usesCssProps(usesPrefixedProps(galleryEditors, 'upload')), // apply config's cssProps starting with upload***
             }),
             
             
             
             // customize:
-            ...usesCssProps(gedits), // apply config's cssProps
+            ...usesCssProps(galleryEditors), // apply config's cssProps
         }),
     });
 };
 
-export const usesMasonryVariants = () => {
+export const usesGalleryEditorVariants = () => {
     // dependencies:
     
     // variants:
-    const {resizableRule} = usesResizable(gedits);
+    const {resizableRule} = usesResizable(galleryEditors);
     
     
     
@@ -96,10 +270,68 @@ export const usesMasonryVariants = () => {
     });
 };
 
+export const usesGalleryEditorStates = () => {
+    // dependencies:
+    
+    // states:
+    const {disableableRule} = usesDisableable(galleryEditors);
+    
+    
+    
+    return style({
+        // children:
+        ...children(imageElm, {
+            // states:
+            ...states([
+                rule('.dragged', {
+                    // animations:
+                    anim : galleryEditors.animDragged,
+                }),
+                rule('.dropped', {
+                    // animations:
+                    anim : galleryEditors.animDropped,
+                }),
+                rule('.dropTarget', {
+                    // animations:
+                    anim : galleryEditors.animDropTarget,
+                }),
+                rule('.shiftedUp', {
+                    // animations:
+                    anim : galleryEditors.animShiftedUp,
+                }),
+                rule('.shiftedDown', {
+                    // animations:
+                    anim : galleryEditors.animShiftedDown,
+                }),
+            ]),
+            
+            
+            
+            // rules:
+            ...rule(actionsContainerElm, {
+                // states:
+                ...disableableRule(),
+            }),
+        }),
+        ...children(uploadImageElm, {
+            // states:
+            ...states([
+                rule('.dropTarget', {
+                    // animations:
+                    anim : galleryEditors.uploadAnimDropTarget,
+                }),
+            ]),
+        }),
+    });
+};
+
 export default () => style({
     // layouts:
-    ...usesMasonryLayout(),
+    ...usesGalleryEditorLayout(),
     
     // variants:
-    ...usesMasonryVariants(),
+    ...usesGalleryEditorVariants(),
+    
+    // states:
+    ...usesGalleryEditorStates(),
 });

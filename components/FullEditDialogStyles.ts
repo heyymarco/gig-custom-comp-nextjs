@@ -1,6 +1,7 @@
 // cssfn:
 import {
     // writes css in javascript:
+    fallback,
     children,
     style,
     vars,
@@ -19,6 +20,11 @@ import {
     
     // a responsive management system:
     ifScreenWidthAtLeast,
+    
+    
+    
+    // groups a list of UIs into a single UI:
+    usesGroupable,
 }                           from '@reusable-ui/core'    // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -70,9 +76,19 @@ export const usesCardBodyLayout = () => {
     });
 };
 export const usesTabListLayout = () => {
-    return vars({
+    return style({
+        // layouts:
+        ...style({
+            // positions:
+            zIndex: 1, // a draggable fix for Chrome
+        }),
+        
+        
+        
         // configs:
-        [lists.borderRadius] : '0px',
+        ...vars({
+            [lists.borderRadius] : '0px',
+        }),
     });
 };
 export const usesTabBodyLayout = () => {
@@ -88,12 +104,12 @@ export const usesTabBodyLayout = () => {
         [borderVars.borderWidth]: '0px',
     });
 };
-export const usesPageInfoLayout = () => {
+export const usesInfoTabLayout = () => {
     return style({
         // layouts:
-        display          : 'grid',
-        alignContent     : 'start',
-        gridTemplate     : [[
+        display            : 'grid',
+        alignContent       : 'start',
+        gridTemplate       : [[
             '"name-label       "', 'auto',
             '"name-editor      "', 'auto',
             '"................."', spacers.sm,
@@ -115,7 +131,7 @@ export const usesPageInfoLayout = () => {
             '1fr'
         ]],
         ...ifScreenWidthAtLeast('lg', {
-            gridTemplate : [[
+            gridTemplate   : [[
                 '"name-label               name-label"', 'auto',
                 '"name-editor             name-editor"', 'auto',
                 '"................. ................."', spacers.sm,
@@ -134,9 +150,14 @@ export const usesPageInfoLayout = () => {
         
         
         
+        // scrolls:
+        overscrollBehavior : 'none',
+        
+        
+        
         // spacings:
-        gapInline : spacers.default,
-        gapBlock  : spacers.xs,
+        gapInline          : spacers.default,
+        gapBlock           : spacers.xs,
         
         
         
@@ -160,6 +181,77 @@ export const usesPageInfoLayout = () => {
         ...children('.visibility.editor', { gridArea: 'visibility-editor' }),
     });
 };
+export const usesImagesTabLayout = () => {
+    return style({
+        // scrolls:
+        overscrollBehavior : 'none',
+    });
+};
+export const usesDescriptionTabLayout = () => {
+    return style({
+        // scrolls:
+        overscrollBehavior : 'none',
+    });
+};
+export const usesEditDescription = () => {
+    // dependencies:
+    
+    // capabilities:
+    const {groupableRule, groupableVars} = usesGroupable({
+        itemsSelector : '&', // select the <WysiwygEditor> itself
+    });
+    
+    // features:
+    const {borderRule, borderVars } = usesBorder({ borderWidth: '0px' });
+    
+    // spacings:
+    const positivePaddingInline = groupableVars.paddingInline;
+    const positivePaddingBlock  = groupableVars.paddingBlock;
+    const negativePaddingInline = `calc(0px - ${positivePaddingInline})`;
+    const negativePaddingBlock  = `calc(0px - ${positivePaddingBlock })`;
+    
+    
+    
+    return style({
+        // capabilities:
+        ...groupableRule(), // make a nicely rounded corners
+        
+        
+        
+        // layouts:
+        ...style({
+            // sizes:
+            // blockSize     : 'fill-available',
+            ...fallback({
+                blockSize : `calc(100% + (${positivePaddingBlock} * 2))`,
+            }),
+            
+            
+            
+            // borders:
+            // follows <parent>'s borderRadius
+            border                   : borderVars.border,
+         // borderRadius             : borderVars.borderRadius,
+            borderStartStartRadius   : borderVars.borderStartStartRadius,
+            borderStartEndRadius     : borderVars.borderStartEndRadius,
+            borderEndStartRadius     : borderVars.borderEndStartRadius,
+            borderEndEndRadius       : borderVars.borderEndEndRadius,
+            [borderVars.borderWidth] : '0px', // only setup borderRadius, no borderStroke
+            
+            
+            
+            // spacings:
+            // cancel-out parent's padding with negative margin:
+            marginInline : negativePaddingInline,
+            marginBlock  : negativePaddingBlock,
+        }),
+        
+        
+        
+        // features:
+        ...borderRule(), // must be placed at the last
+    });
+};
 
 export default () => [
     scope('cardBody', {
@@ -174,7 +266,16 @@ export default () => [
         ...usesTabBodyLayout(),
     }, { specificityWeight: 2 }),
     
-    scope('pageInfo', {
-        ...usesPageInfoLayout(),
+    scope('infoTab', {
+        ...usesInfoTabLayout(),
     }),
+    scope('imagesTab', {
+        ...usesImagesTabLayout(),
+    }),
+    scope('descriptionTab', {
+        ...usesDescriptionTabLayout(),
+    }),
+    scope('editDescription', {
+        ...usesEditDescription(),
+    }, { specificityWeight: 2 }),
 ];

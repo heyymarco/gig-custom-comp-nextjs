@@ -49,7 +49,7 @@ export const SampleDialog = () => {
         
         stock: 8,
         
-        description: 'blah... blah...',
+        description: null,
         images: [
             'nokia-3310_0.jpg',
             'nokia-3310_1.jpg',

@@ -20,6 +20,10 @@ import { GalleryEditor } from '@/components/editors/GalleryEditor/GalleryEditor'
 import { ProductVisibility, VisibilityEditor } from '@/components/editors/VisibilityEditor'
 import { Tab, TabPanel } from '@reusable-ui/components'
 import { ProductEntry } from '@/models/Product';
+import { Image } from '@heymarco/image'
+import axios from 'axios'
+import { resolveMediaUrl } from '@/libs/mediaStorage.client'
+import { WysiwygEditorState, WysiwygEditor, ToolbarPlugin, EditorPlugin } from '@/components/editors/WysiwygEditor';
 
 
 
@@ -27,18 +31,20 @@ import { ProductEntry } from '@/models/Product';
 const useFullEditDialogStyleSheet = dynamicStyleSheets(
     () => import(/* webpackPrefetch: true */'./FullEditDialogStyles')
 , { id: 'pkeb1tledn' }); // need 3 degrees to overwrite `.cardClass.body`
+import './FullEditDialogStyles'
 
 
 
 // react components:
 export interface FullEditDialogProps {
     // data:
-    product          : ProductEntry
+    product                  : ProductEntry
+    defaultExpandedTabIndex ?: number
     
     
     
     // handlers:
-    onClose          : () => void
+    onClose                  : () => void
 }
 export const FullEditDialog = (props: FullEditDialogProps) => {
     // styles:
@@ -50,6 +56,7 @@ export const FullEditDialog = (props: FullEditDialogProps) => {
     const {
         // data:
         product,
+        defaultExpandedTabIndex,
         
         
         
@@ -71,7 +78,17 @@ export const FullEditDialog = (props: FullEditDialogProps) => {
     const [shippingWeight  , setShippingWeight  ] = useState<number|null>(product.shippingWeight ?? null);
     const [stock           , setStock           ] = useState<number|null>(product.stock          ?? null);
     const [images          , setImages          ] = useState<string[]>(product.images);
-    const [description     , setDescription     ] = useState<string>(product.description ?? '');
+    const [description     , setDescription     ] = useState<WysiwygEditorState|null>(() => {
+        const description = product.description;
+        if (!description) return null;
+        if (typeof(description) === 'object') return description as any;
+        try {
+            return JSON.parse(description);
+        }
+        catch {
+            return null;
+        } // try
+    });
     
     const [isLoading, setIsLoading] = useState<boolean>(false);
     
@@ -211,118 +228,192 @@ export const FullEditDialog = (props: FullEditDialogProps) => {
                 {name}
                 <CloseButton onClick={handleClosing} />
             </CardHeader>
-            <Tab
-                // variants:
-                mild='inherit'
-                
-                
-                
-                // classes:
-                className={styles.cardBody}
-                
-                
-                
-                // components:
-                listComponent={<List className={styles.tabList} />}
-                bodyComponent={<Content className={styles.tabBody} />}
-                
-                
-                
-                // handlers:
-                onKeyDown={handleKeyDown}
-            >
-                <TabPanel label={PAGE_PRODUCTS_TAB_INFORMATIONS} panelComponent={<Generic className={styles.pageInfo} />}>
-                    <AccessibilityProvider enabled={!isLoading}>
-                        <ValidationProvider enableValidation={enableValidation}>
-                            <span className='name label'>Name:</span>
-                            <TextEditor           className='name editor'       value={name}           onChange={(value) => { setName(value); setIsModified(true); handleNameChange(value); }} />
+            <ValidationProvider enableValidation={enableValidation}>
+                <Tab
+                    // variants:
+                    mild='inherit'
+                    
+                    
+                    
+                    // classes:
+                    className={styles.cardBody}
+                    
+                    
+                    
+                    // states:
+                    enabled={!isLoading}
+                    
+                    
+                    
+                    // values:
+                    defaultExpandedTabIndex={defaultExpandedTabIndex}
+                    
+                    
+                    
+                    // components:
+                    listComponent={<List className={styles.tabList} />}
+                    bodyComponent={<Content className={styles.tabBody} />}
+                    
+                    
+                    
+                    // handlers:
+                    onKeyDown={handleKeyDown}
+                >
+                    <TabPanel label={PAGE_PRODUCTS_TAB_INFORMATIONS} panelComponent={<Generic className={styles.infoTab} />}>
+                        <span className='name label'>Name:</span>
+                        <TextEditor           className='name editor'       value={name}           onChange={(value) => { setName(value); setIsModified(true); handleNameChange(value); }} />
+                        
+                        <span className='path label'>Path:</span>
+                        <PathEditor           className='path editor'       value={path}           onChange={(value) => { setPath(value); setIsPathModified(true); }} homeUrl={STORE_WEBSITE_URL} />
+                        
+                        <span className='price label'>Price:</span>
+                        <CurrencyEditor       className='price editor'      value={price}          onChange={(value) => { setPrice(value ?? 0); setIsModified(true); }} currencySign={getCurrencySign()} currencyFraction={COMMERCE_CURRENCY_FRACTION_MAX} />
+                        
+                        <span className='sWeight label'>Shipping Weight:</span>
+                        <ShippingWeightEditor className='sWeight editor'    value={shippingWeight} onChange={(value) => { setShippingWeight(value); setIsModified(true); }} />
+                        
+                        <span className='stock label'>Stock:</span>
+                        <StockEditor          className='stock editor'      value={stock}          onChange={(value) => { setStock(value)     ; setIsModified(true); }} theme='primaryAlt' />
+                        
+                        <span className='visibility label'>Visibility:</span>
+                        <VisibilityEditor     className='visibility editor' value={visibility}     onChange={(value) => { setVisibility(value); setIsModified(true); }} theme='primaryAlt' />
+                    </TabPanel>
+                    <TabPanel label={PAGE_PRODUCTS_TAB_IMAGES}       panelComponent={<Generic className={styles.imagesTab} />}>
+                        {/* <GalleryEditor<HTMLElement, string>
+                            // values:
+                            value={images}
+                            onChange={(value) => {
+                                setImages(value);
+                                setIsModified(true);
+                            }}
                             
-                            <span className='path label'>Path:</span>
-                            <PathEditor           className='path editor'       value={path}           onChange={(value) => { setPath(value); setIsPathModified(true); }} homeUrl={STORE_WEBSITE_URL} />
                             
-                            <span className='price label'>Price:</span>
-                            <CurrencyEditor       className='price editor'      value={price}          onChange={(value) => { setPrice(value ?? 0); setIsModified(true); }} currencySign={getCurrencySign()} currencyFraction={COMMERCE_CURRENCY_FRACTION_MAX} />
                             
-                            <span className='sWeight label'>Shipping Weight:</span>
-                            <ShippingWeightEditor className='sWeight editor'    value={shippingWeight} onChange={(value) => { setShippingWeight(value); setIsModified(true); }} />
+                            // actions:
+                            onActionDelete={async (imageData) => {
+                                await axios.delete(`/api/upload?imageId=${encodeURIComponent(imageData)}`);
+                                return true;
+                            }}
                             
-                            <span className='stock label'>Stock:</span>
-                            <StockEditor          className='stock editor'      value={stock}          onChange={(value) => { setStock(value)     ; setIsModified(true); }} theme='primaryAlt' />
                             
-                            <span className='visibility label'>Visibility:</span>
-                            <VisibilityEditor     className='visibility editor' value={visibility}     onChange={(value) => { setVisibility(value); setIsModified(true); }} theme='primaryAlt' />
-                        </ValidationProvider>
-                    </AccessibilityProvider>
-                    <ModalStatus
-                        theme='danger'
-                        backdropStyle='static'
-                    >
-                        {!!errorMessage && <>
-                            <CardHeader>
-                                Error Saving Data
-                                <CloseButton onClick={() => setErrorMessage(undefined)} />
-                            </CardHeader>
-                            <CardBody>
-                                {errorMessage}
-                            </CardBody>
-                            <CardFooter>
-                                <Button onClick={() => setErrorMessage(undefined)}>
-                                    Okay
-                                </Button>
-                            </CardFooter>
-                        </>}
-                    </ModalStatus>
-                    <ModalStatus
-                        theme='warning'
-                        backdropStyle='static'
-                    >
-                        {showWarnUnsaved && <>
-                            <CardHeader>
-                                Unsaved Data
-                            </CardHeader>
-                            <CardBody>
-                                <p>
-                                    Do you want to save the changes?
-                                </p>
-                            </CardBody>
-                            <CardFooter>
-                                <ButtonIcon theme='success' icon='save' onClick={() => {
-                                    // close the dialog first:
-                                    setShowWarnUnsaved(false);
-                                    // then do a save (it will automatically close the editor after successfully saving):
-                                    handleSave();
-                                }}>
-                                    Save
-                                </ButtonIcon>
-                                <ButtonIcon theme='danger' icon='cancel' onClick={() => {
-                                    // close the dialog first:
-                                    setShowWarnUnsaved(false);
-                                    // then close the editor (without saving):
-                                    onClose();
-                                }}>
-                                    Don&apos;t Save
-                                </ButtonIcon>
-                                <ButtonIcon theme='secondary' icon='edit' onClick={() => {
-                                    // close the dialog:
-                                    setShowWarnUnsaved(false);
-                                }}>
-                                    Continue Editing
-                                </ButtonIcon>
-                            </CardFooter>
-                        </>}
-                    </ModalStatus>
-                </TabPanel>
-                <TabPanel label={PAGE_PRODUCTS_TAB_IMAGES}>
-                    <GalleryEditor productName={name} value={images} onChange={(value) => { setImages(value); setIsModified(true); }} />
-                </TabPanel>
-                <TabPanel label={PAGE_PRODUCTS_TAB_DESCRIPTION}>
-                    <p>Under construction...</p>
-                </TabPanel>
-            </Tab>
+                            
+                            // upload/uploading activities:
+                            onUploadImageStart={async (imageFile, reportProgress, cancelController) => {
+                                const formData = new FormData();
+                                formData.append('image' , imageFile);
+                                formData.append('folder', name);
+                                const response = await axios.post('/api/upload', formData, {
+                                    headers          : { 'content-type': 'multipart/form-data' },
+                                    onUploadProgress : (event) => {
+                                        reportProgress(
+                                            (event.loaded * 100) / (event.total ?? 100)
+                                        );
+                                    },
+                                });
+                                return response.data.id;
+                            }}
+                            
+                            
+                            
+                            // components:
+                            imageComponent={
+                                // @ts-ignore
+                                <Image
+                                    priority={true}
+                                />
+                            }
+                            
+                            
+                            
+                            // handlers:
+                            onResolveUrl={resolveMediaUrl<never>}
+                        /> */}
+                    </TabPanel>
+                    <TabPanel label={PAGE_PRODUCTS_TAB_DESCRIPTION}  panelComponent={<Generic className={styles.descriptionTab} />}>
+                        <WysiwygEditor
+                            // classes:
+                            className={styles.editDescription}
+                            
+                            
+                            
+                            // values:
+                            value={description}
+                            onChange={(value) => {
+                                setDescription(value);
+                                setIsModified(true);
+                            }}
+                        >
+                            <ToolbarPlugin className='solid' theme='primary' />
+                            <EditorPlugin
+                                // accessibilities:
+                                placeholder='Type product description here...'
+                            />
+                        </WysiwygEditor>
+                    </TabPanel>
+                </Tab>
+            </ValidationProvider>
             <CardFooter onKeyDown={handleKeyDown}>
                 <ButtonIcon className='btnSave' icon={isLoading ? 'busy' : 'save'} theme='success' onClick={handleSave}>Save</ButtonIcon>
                 <ButtonIcon className='btnCancel' icon='cancel' theme='danger' onClick={handleClosing}>Cancel</ButtonIcon>
             </CardFooter>
+            <ModalStatus
+                theme='danger'
+                backdropStyle='static'
+            >
+                {!!errorMessage && <>
+                    <CardHeader>
+                        Error Saving Data
+                        <CloseButton onClick={() => setErrorMessage(undefined)} />
+                    </CardHeader>
+                    <CardBody>
+                        {errorMessage}
+                    </CardBody>
+                    <CardFooter>
+                        <Button onClick={() => setErrorMessage(undefined)}>
+                            Okay
+                        </Button>
+                    </CardFooter>
+                </>}
+            </ModalStatus>
+            <ModalStatus
+                theme='warning'
+                backdropStyle='static'
+            >
+                {showWarnUnsaved && <>
+                    <CardHeader>
+                        Unsaved Data
+                    </CardHeader>
+                    <CardBody>
+                        <p>
+                            Do you want to save the changes?
+                        </p>
+                    </CardBody>
+                    <CardFooter>
+                        <ButtonIcon theme='success' icon='save' onClick={() => {
+                            // close the dialog first:
+                            setShowWarnUnsaved(false);
+                            // then do a save (it will automatically close the editor after successfully saving):
+                            handleSave();
+                        }}>
+                            Save
+                        </ButtonIcon>
+                        <ButtonIcon theme='danger' icon='cancel' onClick={() => {
+                            // close the dialog first:
+                            setShowWarnUnsaved(false);
+                            // then close the editor (without saving):
+                            onClose();
+                        }}>
+                            Don&apos;t Save
+                        </ButtonIcon>
+                        <ButtonIcon theme='secondary' icon='edit' onClick={() => {
+                            // close the dialog:
+                            setShowWarnUnsaved(false);
+                        }}>
+                            Continue Editing
+                        </ButtonIcon>
+                    </CardFooter>
+                </>}
+            </ModalStatus>
         </>
     );
 }

@@ -1,3 +1,7 @@
+import type { WysiwygEditorState } from "@/components/editors/WysiwygEditor"
+
+
+
 export interface ProductEntry {
     _id            ?: string
     
@@ -10,7 +14,7 @@ export interface ProductEntry {
     
     stock          ?: number
     
-    description    ?: string
+    description    ?: WysiwygEditorState|null
     images          : string[]
     path           ?: string
 }
