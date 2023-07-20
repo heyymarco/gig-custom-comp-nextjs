@@ -88,6 +88,7 @@ export default function scopes() {
             borderRadius: '50%',
             border: borders.default,
             width: '125px',
+            overflow: 'hidden',
         }),
         scope('featureList', {
             display: 'flex',
