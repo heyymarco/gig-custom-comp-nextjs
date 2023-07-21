@@ -1,11 +1,38 @@
-import { useRef } from 'react'
-import { useServerInsertedHTML } from 'next/navigation'
-import { Styles } from '@cssfn/cssfn-react'
+// react:
+import {
+    // react:
+    default as React,
+    
+    
+    
+    // hooks:
+    useId,
+    useRef,
+}                           from 'react'
+
+// nextJS:
+import {
+    // hooks:
+    useServerInsertedHTML,
+}                           from 'next/navigation'
+
+// cssfn:
+import {
+    // react components:
+    Styles,
+}                           from '@cssfn/cssfn-react'               // writes css in react hook
 
 
 
-export const StylesSSR = () => {
-    const isStyleInjected = useRef<boolean>(false); // workaround for <React.StrictMode>
+// react components:
+export const StylesSSR = (): JSX.Element|null => {
+    // identifiers:
+    const id = useId();
+    
+    
+    
+    // renders:
+    const isStyleInjected = useRef<boolean>(false); // workaround for <React.StrictMode> causing re-render twice
     useServerInsertedHTML(() => {
         // conditions:
         if (isStyleInjected.current) return null;
@@ -13,8 +40,12 @@ export const StylesSSR = () => {
         
         
         
-        // actions:
-        return <Styles key='123abc' />
+        // jsx:
+        return <Styles key={id} />
     });
-    return <></>;
+    
+    
+    
+    // jsx:
+    return null;
 }
