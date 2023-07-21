@@ -7,6 +7,7 @@ import {
     style,
     vars,
     scope,
+    globalScope,
 }                           from '@cssfn/core'          // writes css in javascript
 import {
     // a border (stroke) management system:
@@ -46,6 +47,15 @@ export default function scopes() {
     
     
     return [
+        globalScope({
+            ...rule('body', {
+                display        : 'grid',
+                justifyContent : 'center',
+                alignContent   : 'center',
+                
+                minHeight      : '100dvh',
+            }),
+        }),
         scope('page', {
             display: 'grid',
             boxSizing: 'border-box',
