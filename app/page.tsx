@@ -24,6 +24,7 @@ const useHomeStyleSheet = dynamicStyleSheets(
     () => import(/* webpackPrefetch: true */'./pageStyle')
 , { id: 'uzr425g47q' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 import './pageStyle'
+import { SampleWysiwygEditor } from '@/components/SampleWysiwygEditor'
 
 
 
@@ -144,6 +145,9 @@ export default function Home() {
                         </AccordionItem>
                         <AccordionItem bodyComponent={<ListItem className={`${styleSheets.demoPanel} ${styleSheets.demoPanelUpload}`} />} label={<code>{'<UploadImage>'}</code>}>
                             <UploadImage />
+                        </AccordionItem>
+                        <AccordionItem bodyComponent={<ListItem className={`${styleSheets.demoPanel} ${styleSheets.demoPanelUpload}`} />} label={<code>{'<WysiwygEditor>'}</code>}>
+                            <SampleWysiwygEditor />
                         </AccordionItem>
                     </ExclusiveAccordion>
                 </TabPanel>
