@@ -66,11 +66,11 @@ import type {
     WysiwygEditorState,
 }                           from './types'
 
-// theme:
+// themes:
 import {
     // defined classes to match Reusable-UI's styles & components.
-    defaultTheme,
-}                           from './defaultTheme'
+    defaultThemes,
+}                           from './defaultThemes'
 
 // nodes:
 import {
@@ -118,6 +118,8 @@ export interface WysiwygEditorProps<TElement extends Element = HTMLElement>
         >
 {
     // plugins:
+    themes   ?: (themes : Required<InitialConfigType>['theme']) => InitialConfigType['theme']|null|undefined
+    nodes    ?: (nodes  : Required<InitialConfigType>['nodes']) => InitialConfigType['nodes']|null|undefined
     children ?: React.ReactNode
 }
 const WysiwygEditor = <TElement extends Element = HTMLElement>(props: WysiwygEditorProps<TElement>): JSX.Element|null => {
@@ -141,6 +143,8 @@ const WysiwygEditor = <TElement extends Element = HTMLElement>(props: WysiwygEdi
         
         
         // plugins:
+        themes,
+        nodes,
         children : plugins,
     ...restIndicatorProps} = props;
     
@@ -161,31 +165,35 @@ const WysiwygEditor = <TElement extends Element = HTMLElement>(props: WysiwygEdi
     
     
     // configs:
-    const initialConfig : InitialConfigType = useMemo(() => ({
-        namespace   : 'WysiwygEditor', 
-        editable    : !isDisabledOrReadOnly,
-        onError     : handleError,
-        
-        editorState : (editor) => {
-            // fn props:
-            const initialValue = ((value !== undefined) ? value : defaultValue) ?? null;
-            const editorState = (
-                !initialValue
-                ? null
-                : ('root' in initialValue)
-                    ? editor.parseEditorState(initialValue as any)
-                    : initialValue
-            );
+    const initialConfig : InitialConfigType = useMemo(() => {
+        const theDefaultThemes = defaultThemes();
+        const theDefaultNodes  = defaultNodes();
+        return {
+            namespace   : 'WysiwygEditor', 
+            editable    : !isDisabledOrReadOnly,
+            onError     : handleError,
             
+            editorState : (editor) => {
+                // fn props:
+                const initialValue = ((value !== undefined) ? value : defaultValue) ?? null;
+                const editorState = (
+                    !initialValue
+                    ? null
+                    : ('root' in initialValue)
+                        ? editor.parseEditorState(initialValue as any)
+                        : initialValue
+                );
+                
+                
+                
+                // actions:
+                editor.setEditorState(editorState ?? ({} as any));
+            },
             
-            
-            // actions:
-            editor.setEditorState(editorState ?? ({} as any));
-        },
-        
-        theme       : defaultTheme(),
-        nodes       : defaultNodes(),
-    }), []);
+            theme       : themes?.(theDefaultThemes) ?? theDefaultThemes,
+            nodes       : nodes?.(theDefaultNodes)   ?? theDefaultNodes,
+        };
+    }, []);
     
     
     

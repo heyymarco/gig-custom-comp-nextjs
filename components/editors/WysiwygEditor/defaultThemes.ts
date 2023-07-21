@@ -1,4 +1,4 @@
-export const defaultTheme = () => ({
+export const defaultThemes = () => ({
  // ltr                        : 'ltr',
  // rtl                        : 'rtl',
     

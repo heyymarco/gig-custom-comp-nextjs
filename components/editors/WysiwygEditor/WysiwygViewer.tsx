@@ -13,6 +13,11 @@ import {
 import {
     // react helper hooks:
     useEvent,
+    
+    
+    
+    // basic variants of UI:
+    useBasicVariantProps,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -45,8 +50,8 @@ import type {
 // theme:
 import {
     // defined classes to match Reusable-UI's styles & components.
-    defaultTheme,
-}                           from './defaultTheme'
+    defaultThemes,
+}                           from './defaultThemes'
 
 // nodes:
 import {
@@ -88,12 +93,28 @@ export interface WysiwygViewerProps<TElement extends Element = HTMLElement>
             |'value'        // take
         >
 {
+    // plugins:
+    themes   ?: (themes : Required<InitialConfigType>['theme']) => InitialConfigType['theme']|null|undefined
+    nodes    ?: (nodes  : Required<InitialConfigType>['nodes']) => InitialConfigType['nodes']|null|undefined
+    children ?: React.ReactNode
 }
 const WysiwygViewer = <TElement extends Element = HTMLElement>(props: WysiwygViewerProps<TElement>): JSX.Element|null => {
+    // basic variant props:
+    const basicVariantProps = useBasicVariantProps(props);
+    
+    
+    
     // rest props:
     const {
         // values:
         value,
+        
+        
+        
+        // plugins:
+        themes,
+        nodes,
+        children : plugins,
     ...restIndicatorProps} = props;
     
     
@@ -106,31 +127,35 @@ const WysiwygViewer = <TElement extends Element = HTMLElement>(props: WysiwygVie
     
     
     // configs:
-    const initialConfig : InitialConfigType = useMemo(() => ({
-        namespace   : 'WysiwygViewer', 
-        editable    : false,
-        onError     : handleError,
-        
-        editorState : (editor) => {
-            // fn props:
-            const initialValue = value ?? null;
-            const editorState = (
-                !initialValue
-                ? null
-                : ('root' in initialValue)
-                    ? editor.parseEditorState(initialValue as any)
-                    : initialValue
-            );
+    const initialConfig : InitialConfigType = useMemo(() => {
+        const theDefaultThemes = defaultThemes();
+        const theDefaultNodes  = defaultNodes();
+        return {
+            namespace   : 'WysiwygViewer', 
+            editable    : false,
+            onError     : handleError,
             
+            editorState : (editor) => {
+                // fn props:
+                const initialValue = value ?? null;
+                const editorState = (
+                    !initialValue
+                    ? null
+                    : ('root' in initialValue)
+                        ? editor.parseEditorState(initialValue as any)
+                        : initialValue
+                );
+                
+                
+                
+                // actions:
+                editor.setEditorState(editorState ?? ({} as any));
+            },
             
-            
-            // actions:
-            editor.setEditorState(editorState ?? ({} as any));
-        },
-        
-        theme       : defaultTheme(),
-        nodes       : defaultNodes(),
-    }), []);
+            theme       : themes?.(theDefaultThemes) ?? theDefaultThemes,
+            nodes       : nodes?.(theDefaultNodes)   ?? theDefaultNodes,
+        };
+    }, []);
     
     
     
@@ -143,10 +168,31 @@ const WysiwygViewer = <TElement extends Element = HTMLElement>(props: WysiwygVie
             
             
             {/* elements: */}
-            <ViewerPlugin
-                // other props:
-                {...restIndicatorProps}
-            />
+            <>
+                <ViewerPlugin
+                    // other props:
+                    {...restIndicatorProps}
+                />
+                {React.Children.map(plugins, (plugin) => {
+                    if (!React.isValidElement(plugin)) return plugin; // not an <element> => no modify
+                    
+                    
+                    
+                    // jsx:
+                    return React.cloneElement(plugin,
+                        // props:
+                        {
+                            // basic variant props:
+                            ...basicVariantProps,
+                            
+                            
+                            
+                            // other props:
+                            ...plugin.props,
+                        },
+                    );
+                })}
+            </>
         </LexicalComposer>
     );
 };
